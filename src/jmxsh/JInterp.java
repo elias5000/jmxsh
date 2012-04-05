@@ -24,6 +24,8 @@ package jmxsh;
 
 import org.apache.log4j.*;
 import tcl.lang.*;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
 class JInterp extends Interp {
 
@@ -109,6 +111,21 @@ class JInterp extends Interp {
 	    logger.error("Tcl error while evaluating file.", e);
 	    throw new IllegalArgumentException("Error processing file '" + filename + "' - " + instance.getResult().toString());
 	}
+    }
+
+    static void evaluateStdin() {
+       try {
+               BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+               String strLine;
+               while ((strLine = br.readLine()) != null) {
+                       //System.out.println(strLine);
+                       instance.eval(strLine);
+               }
+       }
+       catch (Exception e) {
+           logger.error("Tcl error while evaluating stdin.", e);
+           throw new IllegalArgumentException("Error processing stdin" + instance.getResult().toString());
+       }
     }
 
     static void processTclEvents() {
