@@ -268,7 +268,9 @@ class Jmx {
 	    throw new IllegalArgumentException("Attribute not found.", e);
 	}
         catch(InstanceNotFoundException e)	    {
-	    throw new IllegalArgumentException("MBean not found.", e);
+          // ugly fix but it keeps jmxsh.py from bailing out
+          return 0;
+	    //throw new IllegalArgumentException("MBean not found.", e);
 	}
         catch(MBeanException e)	    {
 	    logger.error("Error while getting attribute.", e);
